@@ -1,0 +1,66 @@
+{% extends "partials/layout.njk" %}
+{% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "partials/createJourneyHeader.njk" import createJourneyHeader %}
+
+{% set pageTitle = "Check and confirm the official visit details" %}
+{% set backUrl = "/manage/create/comments" %}
+
+{% block content %}
+  {{ createJourneyHeader(prisoner, stepsChecked) }}
+
+  <span class="govuk-hint">Book an official visit</span>
+  <h1 class="govuk-heading-l">{{ pageTitle }}</h1>
+
+  <h2 class="govuk-heading-m">Visit details</h2>
+  {{ govukSummaryList({
+    rows: [
+      {
+        key: { text: "Prisoner" },
+        value: { text: (prisoner | firstNameSpaceLastName) + " (" + prisoner.prisonerNumber + ")" },
+        actions: { items: [{ href: "/manage/create/results", text: "Change", visuallyHiddenText: "the selected prisoner" }] }
+      },
+      {
+        key: { text: "Visit type" },
+        value: { text: visit.visitTypeDescription },
+        actions: { items: [{ href: "/manage/create/visit-type", text: "Change", visuallyHiddenText: "the type of visit" }] }
+      },
+      {
+        key: { text: "Date" },
+        value: { text: visit.selectedTimeSlot.visitDate | formatDate("EEEE, d MMMM yyyy") },
+        actions: { items: [{ href: "/manage/create/time-slot", text: "Change", visuallyHiddenText: "the date of the visit" }] }
+      },
+      {
+        key: { text: "Time" },
+        value: { text: (visit.selectedTimeSlot.startTime | timeStringTo12HourPretty) + " to " + (visit.selectedTimeSlot.endTime | timeStringTo12HourPretty) },
+        actions: { items: [{ href: "/manage/create/time-slot", text: "Change", visuallyHiddenText: "the time of the visit" }] }
+      },
+      {
+        key: { text: "Location" },
+        value: { text: visit.selectedTimeSlot.locationDescription },
+        actions: { items: [{ href: "/manage/create/time-slot", text: "Change", visuallyHiddenText: "the location of the visit" }] }
+      },
+      {
+        key: { text: "Staff notes" },
+        value: { text: visit.staffNotes or "None" },
+        actions: { items: [{ href: "/manage/create/comments", text: "Change", visuallyHiddenText: "staff notes" }] }
+      },
+      {
+        key: { text: "Prisoner notes" },
+        value: { text: visit.prisonerNotes or "None" },
+        actions: { items: [{ href: "/manage/create/comments", text: "Change", visuallyHiddenText: "prisoner notes" }] }
+      }
+    ]
+  }) }}
+
+  <h2 class="govuk-heading-m">Visitors</h2>
+  <ul class="govuk-list govuk-list--bullet">
+    {% for contact in contacts %}
+      <li>{{ contact.firstName }} {{ contact.lastName }} ({{ contact.relationshipDescription }})</li>
+    {% endfor %}
+  </ul>
+
+  <form method="post">
+    {{ govukButton({ text: "Create official visit" }) }}
+  </form>
+{% endblock %}

@@ -42,7 +42,7 @@ server/
 │   └── journeys/
 │       ├── home/               # the landing page with the cards
 │       ├── view/               # list + view a single visit
-│       ├── manage/             # "book a visit" journey (prisoner search)
+│       ├── manage/             # full "book a visit" journey (see below)
 │       └── admin/              # locations admin
 ├── services/                   # in-memory dummy data — edit these to change content
 │   ├── officialVisitsService.ts
@@ -57,6 +57,30 @@ Want a new page? Add a route in the relevant `routes/journeys/*/index.ts`, drop 
 template under `server/views/pages/`, and (if it needs data) extend the matching
 service. To change the fake user's permissions, edit
 `server/middleware/setUpFakeUser.ts`.
+
+### The "book an official visit" journey
+
+This is a simplified, single-session version of the real multi-step wizard. The
+steps live in `server/routes/journeys/manage/`:
+
+```
+search → results → pick prisoner → visit type → time slot →
+visitors → extra information → check your answers → confirmation
+```
+
+It follows the same patterns as the production service:
+
+- **Session-backed state** — the in-progress booking lives on
+  `req.session.journey.officialVisit` (typed in `server/interfaces/journey.ts`).
+- **A step guard** (`journeyState.ts` `requireStep`) that pushes you back a step
+  if you try to skip ahead, mirroring the real `JourneyStateGuard`.
+- **Per-step handlers** under `handlers/`, each exposing `GET`/`POST`.
+- **A progress tracker** (`partials/progress-tracker.njk`) driven by how many
+  milestones are complete.
+
+Confirming on the check-your-answers page "creates" the visit in
+`officialVisitsService` — so it then shows up in **View or cancel existing
+official visits**.
 
 > This is **not** the production service and is not wired to any real prison
 > data or APIs. It is intended only as a sandbox.

@@ -1,0 +1,14 @@
+{% from "partials/progress-tracker.njk" import progressTracker %}
+
+{# A simplified version of the real service's mini-profile + progress tracker
+   header shown at the top of each booking step. #}
+{% macro createJourneyHeader(prisoner, stepsChecked) %}
+  {% if prisoner %}
+    <div class="hmpps-mini-profile govuk-!-margin-bottom-4">
+      <span class="govuk-body govuk-!-font-weight-bold">{{ prisoner | firstNameSpaceLastName }}</span>
+      <span class="govuk-hint govuk-!-display-inline">({{ prisoner.prisonerNumber }})</span>
+    </div>
+  {% endif %}
+
+  {{ progressTracker(stepsChecked) }}
+{% endmacro %}

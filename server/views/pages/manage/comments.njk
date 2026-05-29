@@ -1,0 +1,44 @@
+{% extends "partials/layout.njk" %}
+{% from "govuk/components/character-count/macro.njk" import govukCharacterCount %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "partials/createJourneyHeader.njk" import createJourneyHeader %}
+
+{% set pageTitle = "Add extra information" %}
+{% set backUrl = "/manage/create/select-visitors" %}
+
+{% block content %}
+  {{ createJourneyHeader(prisoner, stepsChecked) }}
+
+  <span class="govuk-hint">Book an official visit</span>
+  <h1 class="govuk-heading-l">{{ pageTitle }} (optional)</h1>
+
+  <p class="govuk-body">Add any important information about how to prepare for the official visit.</p>
+
+  <form method="post">
+    {{ govukCharacterCount({
+      classes: 'govuk-!-margin-top-4',
+      name: "staffNotes",
+      id: "staffNotes",
+      label: { text: 'Staff notes', classes: 'govuk-label--m' },
+      hint: { text: "Add any additional information or observations about the visit for staff" },
+      maxlength: 240,
+      rows: 5,
+      value: staffNotes,
+      errorMessage: validationErrors | findError("staffNotes")
+    }) }}
+
+    {{ govukCharacterCount({
+      classes: 'govuk-!-margin-top-4',
+      name: "prisonerNotes",
+      id: "prisonerNotes",
+      label: { text: 'Prisoner notes', classes: 'govuk-label--m' },
+      hint: { text: "Add any additional information or observations about the visit for the prisoner" },
+      maxlength: 240,
+      rows: 5,
+      value: prisonerNotes,
+      errorMessage: validationErrors | findError("prisonerNotes")
+    }) }}
+
+    {{ govukButton({ text: "Continue" }) }}
+  </form>
+{% endblock %}

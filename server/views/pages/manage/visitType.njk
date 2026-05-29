@@ -1,0 +1,31 @@
+{% extends "partials/layout.njk" %}
+{% from "govuk/components/radios/macro.njk" import govukRadios %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "partials/createJourneyHeader.njk" import createJourneyHeader %}
+
+{% set pageTitle = "What type of official visit?" %}
+{% set backUrl = "/manage/create/results" %}
+
+{% block content %}
+  {{ createJourneyHeader(prisoner, stepsChecked) }}
+
+  <span class="govuk-hint">Book an official visit</span>
+
+  <form method="post">
+    {{ govukRadios({
+      idPrefix: "visitType",
+      name: "visitType",
+      fieldset: {
+        legend: {
+          text: pageTitle,
+          isPageHeading: true,
+          classes: "govuk-fieldset__legend--l"
+        }
+      },
+      items: items,
+      errorMessage: validationErrors | findError('visitType')
+    }) }}
+
+    {{ govukButton({ text: "Continue" }) }}
+  </form>
+{% endblock %}

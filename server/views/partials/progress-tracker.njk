@@ -1,0 +1,16 @@
+{% from "moj/components/progress-bar/macro.njk" import mojProgressBar %}
+
+{% macro progressTracker(stepsChecked) %}
+  <div class="moj-progress-tracker govuk-!-margin-bottom-6" data-qa="moj-progress-tracker">
+    {{ mojProgressBar({
+      items: [
+        { id: 1, label: { text: 'Who is attending' }, complete: stepsChecked >= 1 },
+        { id: 2, label: { text: 'Visit type' }, complete: stepsChecked >= 2 },
+        { id: 3, label: { text: 'Time and place' }, complete: stepsChecked >= 3 },
+        { id: 4, label: { text: 'Visitors' }, complete: stepsChecked >= 4 },
+        { id: 5, label: { text: 'Extra information' }, complete: stepsChecked >= 5 },
+        { id: 6, label: { text: 'Check and confirm' }, complete: stepsChecked >= 6 }
+      ]
+    }) }}
+  </div>
+{% endmacro %}

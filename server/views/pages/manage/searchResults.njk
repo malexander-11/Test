@@ -1,10 +1,13 @@
 {% extends "partials/layout.njk" %}
 {% from "govuk/components/table/macro.njk" import govukTable %}
+{% from "partials/createJourneyHeader.njk" import createJourneyHeader %}
 
 {% set pageTitle = "Select a prisoner" %}
 {% set backUrl = "/manage/create/search" %}
 
 {% block content %}
+  {{ createJourneyHeader(null, stepsChecked) }}
+
   <span class="govuk-hint">Book an official visit</span>
   <h1 class="govuk-heading-l">{{ pageTitle }}</h1>
 
@@ -17,7 +20,7 @@
     {% set rows = (rows.push([
       { text: prisoner | lastNameCommaFirstName },
       { text: prisoner.prisonerNumber },
-      { html: '<a class="govuk-link govuk-link--no-visited-state" href="#">Select</a>' }
+      { html: '<a class="govuk-link govuk-link--no-visited-state" href="/manage/create/prisoner-select?prisonerNumber=' + prisoner.prisonerNumber + '">Select</a>' }
     ]), rows) %}
   {% endfor %}
 

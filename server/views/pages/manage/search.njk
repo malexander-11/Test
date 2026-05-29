@@ -9,13 +9,15 @@
   <span class="govuk-hint">Book an official visit</span>
   <h1 class="govuk-heading-l">{{ pageTitle }}</h1>
 
-  <form method="get" action="/manage/create/search-results">
+  <form method="post">
     {{ govukInput({
       id: "query",
       name: "query",
+      value: searchTerm,
       classes: "govuk-input--width-20",
       label: { text: "Search by prisoner name or prisoner ID" },
-      hint: { text: "For example, Smith or A1234BC" }
+      hint: { text: "For example, Smith or A1234BC" },
+      errorMessage: validationErrors | findError('query')
     }) }}
     {{ govukButton({ text: "Search" }) }}
   </form>

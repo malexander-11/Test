@@ -1,5 +1,13 @@
-// In-memory stand-in for the Prisoner Search API client + service.
+// In-memory stand-in for the Prisoner Search + Personal Relationships API
+// clients. Provides prisoner search and the prisoner's approved contacts.
 import type { Prisoner } from './officialVisitsService'
+
+export interface Contact {
+  contactId: string
+  firstName: string
+  lastName: string
+  relationshipDescription: string
+}
 
 const dummyPrisoners: Prisoner[] = [
   { prisonerNumber: 'A1234BC', firstName: 'John', lastName: 'Smith' },
@@ -7,6 +15,14 @@ const dummyPrisoners: Prisoner[] = [
   { prisonerNumber: 'C3456DE', firstName: 'Michael', lastName: 'Brown' },
   { prisonerNumber: 'D4567EF', firstName: 'Sarah', lastName: 'Williams' },
 ]
+
+const dummyContacts: Record<string, Contact[]> = {
+  default: [
+    { contactId: 'C1', firstName: 'Jane', lastName: 'Doe', relationshipDescription: 'Solicitor' },
+    { contactId: 'C2', firstName: 'Robert', lastName: 'Hughes', relationshipDescription: 'Legal representative' },
+    { contactId: 'C3', firstName: 'Amara', lastName: 'Okafor', relationshipDescription: 'Probation officer' },
+  ],
+}
 
 export default class PrisonerService {
   // eslint-disable-next-line class-methods-use-this
@@ -19,5 +35,15 @@ export default class PrisonerService {
         p.firstName.toLowerCase().includes(q) ||
         p.lastName.toLowerCase().includes(q),
     )
+  }
+
+  // eslint-disable-next-line class-methods-use-this
+  async getPrisoner(prisonerNumber: string): Promise<Prisoner | undefined> {
+    return dummyPrisoners.find(p => p.prisonerNumber === prisonerNumber)
+  }
+
+  // eslint-disable-next-line class-methods-use-this
+  async getApprovedContacts(_prisonerNumber: string): Promise<Contact[]> {
+    return dummyContacts.default
   }
 }

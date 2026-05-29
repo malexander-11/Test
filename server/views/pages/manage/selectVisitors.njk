@@ -1,0 +1,32 @@
+{% extends "partials/layout.njk" %}
+{% from "govuk/components/checkboxes/macro.njk" import govukCheckboxes %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "partials/createJourneyHeader.njk" import createJourneyHeader %}
+
+{% set pageTitle = "Who is visiting?" %}
+{% set backUrl = "/manage/create/time-slot" %}
+
+{% block content %}
+  {{ createJourneyHeader(prisoner, stepsChecked) }}
+
+  <span class="govuk-hint">Book an official visit</span>
+
+  <form method="post">
+    {{ govukCheckboxes({
+      idPrefix: "visitors",
+      name: "visitors",
+      fieldset: {
+        legend: {
+          text: pageTitle,
+          isPageHeading: true,
+          classes: "govuk-fieldset__legend--l"
+        }
+      },
+      hint: { text: "Select all the approved contacts attending this official visit." },
+      items: items,
+      errorMessage: validationErrors | findError('visitors')
+    }) }}
+
+    {{ govukButton({ text: "Continue" }) }}
+  </form>
+{% endblock %}
