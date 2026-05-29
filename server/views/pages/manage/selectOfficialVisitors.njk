@@ -4,7 +4,6 @@
 {% from "partials/createJourneyHeader.njk" import createJourneyHeader %}
 
 {% set pageTitle = "Who is visiting?" %}
-{% set backUrl = "/manage/create/time-slot" %}
 
 {% block content %}
   {{ createJourneyHeader(prisoner, stepsChecked) }}
@@ -22,11 +21,11 @@
           classes: "govuk-fieldset__legend--l"
         }
       },
-      hint: { text: "Select all the approved contacts attending this official visit." },
+      hint: { text: "Select the official contacts attending this visit." },
       items: items,
       errorMessage: validationErrors | findError('visitors')
     }) }}
 
-    {{ govukButton({ text: "Continue" }) }}
+    {{ govukButton({ text: submitText or "Continue" }) }}
   </form>
 {% endblock %}

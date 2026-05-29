@@ -18,4 +18,9 @@ export default {
     digitalPrison: process.env.DPS_HOME_PAGE_URL || 'http://localhost:3001',
     prisonerProfile: process.env.PRISONER_PROFILE_URL || 'http://localhost:3001',
   },
+  featureToggles: {
+    // In the real service the social-visitors step is gated per-prison by a
+    // feature toggle. Default it on here so the full journey is demonstrable.
+    allowSocialVisitors: (process.env.FEATURE_ALLOW_SOCIAL_VISITORS ?? 'true') === 'true',
+  },
 }

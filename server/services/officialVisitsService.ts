@@ -1,8 +1,8 @@
 // In-memory stand-in for the Official Visits API client + service. Returns a
 // handful of fake visits so the view/manage screens have something to render,
-// and lets the booking journey "create" new ones (which then appear in the
-// view list).
-import type { OfficialVisitJourney } from '../interfaces/journey'
+// and lets the booking journey "create" and "amend" them (changes are visible
+// in the view list).
+import type { JourneyVisitor, OfficialVisitJourney } from '../interfaces/journey'
 
 export interface Prisoner {
   prisonerNumber: string
@@ -25,49 +25,20 @@ export interface AvailableSlot {
 
 export interface OfficialVisit {
   officialVisitId: string
+  visitType: string // ref data code
+  visitTypeDescription: string
+  timeSlotId?: string
   visitDate: string // ISO yyyy-MM-dd
   startTime: string // HH:mm
   endTime: string // HH:mm
   locationDescription: string
-  visitTypeDescription: string
   visitStatusDescription: string
   prisoner: Prisoner
-  comments?: string
+  staffNotes?: string
+  prisonerNotes?: string
+  officialVisitors: JourneyVisitor[]
+  socialVisitors: JourneyVisitor[]
 }
-
-const dummyVisits: OfficialVisit[] = [
-  {
-    officialVisitId: 'a1b2c3',
-    visitDate: '2026-06-02',
-    startTime: '10:00',
-    endTime: '11:00',
-    locationDescription: 'Visits Hall 1',
-    visitTypeDescription: 'Legal visit',
-    visitStatusDescription: 'Booked',
-    prisoner: { prisonerNumber: 'A1234BC', firstName: 'John', lastName: 'Smith' },
-    comments: 'Solicitor meeting ahead of hearing.',
-  },
-  {
-    officialVisitId: 'd4e5f6',
-    visitDate: '2026-06-03',
-    startTime: '14:30',
-    endTime: '15:15',
-    locationDescription: 'Legal Visits Room 2',
-    visitTypeDescription: 'Police visit',
-    visitStatusDescription: 'Booked',
-    prisoner: { prisonerNumber: 'B2345CD', firstName: 'David', lastName: 'Jones' },
-  },
-  {
-    officialVisitId: 'g7h8i9',
-    visitDate: '2026-05-28',
-    startTime: '09:15',
-    endTime: '10:00',
-    locationDescription: 'Visits Hall 1',
-    visitTypeDescription: 'Embassy visit',
-    visitStatusDescription: 'Completed',
-    prisoner: { prisonerNumber: 'C3456DE', firstName: 'Michael', lastName: 'Brown' },
-  },
-]
 
 const visitTypes: RefDataItem[] = [
   { code: 'LEGAL', description: 'Legal visit' },
@@ -77,26 +48,55 @@ const visitTypes: RefDataItem[] = [
 ]
 
 const availableSlots: AvailableSlot[] = [
+  { timeSlotId: 'TS1', visitDate: '2026-06-05', startTime: '09:00', endTime: '10:00', locationDescription: 'Visits Hall 1' },
+  { timeSlotId: 'TS2', visitDate: '2026-06-05', startTime: '10:30', endTime: '11:30', locationDescription: 'Legal Visits Room 2' },
+  { timeSlotId: 'TS3', visitDate: '2026-06-06', startTime: '14:00', endTime: '15:00', locationDescription: 'Visits Hall 1' },
+]
+
+const dummyVisits: OfficialVisit[] = [
   {
-    timeSlotId: 'TS1',
-    visitDate: '2026-06-05',
-    startTime: '09:00',
+    officialVisitId: 'a1b2c3',
+    visitType: 'LEGAL',
+    visitTypeDescription: 'Legal visit',
+    visitDate: '2026-06-02',
+    startTime: '10:00',
+    endTime: '11:00',
+    locationDescription: 'Visits Hall 1',
+    visitStatusDescription: 'Booked',
+    prisoner: { prisonerNumber: 'A1234BC', firstName: 'John', lastName: 'Smith' },
+    staffNotes: 'Solicitor meeting ahead of hearing.',
+    officialVisitors: [
+      { contactId: 'C1', firstName: 'Jane', lastName: 'Doe', relationshipDescription: 'Solicitor', relationshipType: 'OFFICIAL', assistedVisit: false },
+    ],
+    socialVisitors: [],
+  },
+  {
+    officialVisitId: 'd4e5f6',
+    visitType: 'POLICE',
+    visitTypeDescription: 'Police visit',
+    visitDate: '2026-06-03',
+    startTime: '14:30',
+    endTime: '15:15',
+    locationDescription: 'Legal Visits Room 2',
+    visitStatusDescription: 'Booked',
+    prisoner: { prisonerNumber: 'B2345CD', firstName: 'David', lastName: 'Jones' },
+    officialVisitors: [
+      { contactId: 'C3', firstName: 'Amara', lastName: 'Okafor', relationshipDescription: 'Probation officer', relationshipType: 'OFFICIAL', assistedVisit: false },
+    ],
+    socialVisitors: [],
+  },
+  {
+    officialVisitId: 'g7h8i9',
+    visitType: 'EMBASSY',
+    visitTypeDescription: 'Embassy visit',
+    visitDate: '2026-05-28',
+    startTime: '09:15',
     endTime: '10:00',
     locationDescription: 'Visits Hall 1',
-  },
-  {
-    timeSlotId: 'TS2',
-    visitDate: '2026-06-05',
-    startTime: '10:30',
-    endTime: '11:30',
-    locationDescription: 'Legal Visits Room 2',
-  },
-  {
-    timeSlotId: 'TS3',
-    visitDate: '2026-06-06',
-    startTime: '14:00',
-    endTime: '15:00',
-    locationDescription: 'Visits Hall 1',
+    visitStatusDescription: 'Completed',
+    prisoner: { prisonerNumber: 'C3456DE', firstName: 'Michael', lastName: 'Brown' },
+    officialVisitors: [],
+    socialVisitors: [],
   },
 ]
 
@@ -128,15 +128,27 @@ export default class OfficialVisitsService {
     const slot = journey.selectedTimeSlot!
     dummyVisits.push({
       officialVisitId,
+      visitType: journey.visitType!,
+      visitTypeDescription: journey.visitTypeDescription!,
+      timeSlotId: slot.timeSlotId,
       visitDate: slot.visitDate,
       startTime: slot.startTime,
       endTime: slot.endTime,
       locationDescription: slot.locationDescription,
-      visitTypeDescription: journey.visitTypeDescription!,
       visitStatusDescription: 'Booked',
       prisoner: journey.prisoner!,
-      comments: journey.staffNotes,
+      staffNotes: journey.staffNotes,
+      prisonerNotes: journey.prisonerNotes,
+      officialVisitors: journey.officialVisitors ?? [],
+      socialVisitors: journey.socialVisitors ?? [],
     })
     return { officialVisitId }
+  }
+
+  // Applies a partial update to an existing visit (used by the amend journey).
+  // eslint-disable-next-line class-methods-use-this
+  async updateVisit(officialVisitId: string, changes: Partial<OfficialVisit>): Promise<void> {
+    const visit = dummyVisits.find(v => v.officialVisitId === officialVisitId)
+    if (visit) Object.assign(visit, changes)
   }
 }

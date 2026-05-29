@@ -1,0 +1,46 @@
+{% extends "partials/layout.njk" %}
+{% from "govuk/components/radios/macro.njk" import govukRadios %}
+{% from "govuk/components/textarea/macro.njk" import govukTextarea %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "partials/createJourneyHeader.njk" import createJourneyHeader %}
+
+{% set pageTitle = "Does anyone need assistance?" %}
+
+{% block content %}
+  {{ createJourneyHeader(prisoner, stepsChecked) }}
+
+  <span class="govuk-hint">Book an official visit</span>
+  <h1 class="govuk-heading-l">{{ pageTitle }}</h1>
+  <p class="govuk-body">Tell us if any visitor needs assistance, for example because of a disability or health condition.</p>
+
+  <form method="post">
+    {% for contact in contacts %}
+      {% set notesHtml %}
+        {{ govukTextarea({
+          name: "assistanceNotes-" + contact.contactId,
+          id: "assistanceNotes-" + contact.contactId,
+          label: { text: "Tell us what assistance is needed" },
+          value: contact.assistanceNotes
+        }) }}
+      {% endset %}
+
+      {{ govukRadios({
+        idPrefix: "assistedVisit-" + contact.contactId,
+        name: "assistedVisit-" + contact.contactId,
+        classes: "govuk-radios--inline",
+        fieldset: {
+          legend: {
+            text: contact.firstName + " " + contact.lastName + " (" + contact.relationshipDescription + ")",
+            classes: "govuk-fieldset__legend--m"
+          }
+        },
+        items: [
+          { value: "yes", text: "Yes", checked: contact.assistedVisit === true, conditional: { html: notesHtml } },
+          { value: "no", text: "No", checked: contact.assistedVisit === false }
+        ]
+      }) }}
+    {% endfor %}
+
+    {{ govukButton({ text: submitText or "Continue" }) }}
+  </form>
+{% endblock %}

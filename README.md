@@ -60,12 +60,13 @@ service. To change the fake user's permissions, edit
 
 ### The "book an official visit" journey
 
-This is a simplified, single-session version of the real multi-step wizard. The
-steps live in `server/routes/journeys/manage/`:
+A simplified, single-session version of the real multi-step wizard. The steps
+live in `server/routes/journeys/manage/`:
 
 ```
 search → results → pick prisoner → visit type → time slot →
-visitors → extra information → check your answers → confirmation
+official visitors → social visitors → assistance → equipment →
+extra information → check your answers → confirmation
 ```
 
 It follows the same patterns as the production service:
@@ -77,10 +78,28 @@ It follows the same patterns as the production service:
 - **Per-step handlers** under `handlers/`, each exposing `GET`/`POST`.
 - **A progress tracker** (`partials/progress-tracker.njk`) driven by how many
   milestones are complete.
+- **Conditional steps**, like the real service:
+  - *Social visitors* only appears when the `allowSocialVisitors` feature toggle
+    is on (`config.ts`) and at least one official visitor is chosen.
+  - *Equipment* only appears for in-person visits (a "Video link visit" skips
+    it).
 
 Confirming on the check-your-answers page "creates" the visit in
 `officialVisitsService` — so it then shows up in **View or cancel existing
 official visits**.
+
+### The "amend an official visit" journey
+
+Open any visit from the view list and choose **Amend this visit**
+(`/manage/amend/:id`). This re-uses the very same step handlers in "amend mode"
+(`res.locals.mode === 'amend'`):
+
+- The landing page (`amendLanding.njk`) hydrates the journey from the stored
+  visit and shows a summary with **Change** links to each step.
+- Each step, in amend mode, saves the change straight back to the visit via
+  `officialVisitsService.updateVisit` and returns you to the landing — rather
+  than walking to the next create step.
+- `requireAmendJourney` re-hydrates the journey if you deep-link to a step.
 
 > This is **not** the production service and is not wired to any real prison
 > data or APIs. It is intended only as a sandbox.

@@ -9,16 +9,15 @@ export default function confirmationHandler({ officialVisitsService }: Services)
     if (!visit) {
       return next(createError(404, 'Visit not found'))
     }
-    // The booking is done — capture what we need, then clear the journey so a
-    // refresh or "book another" starts clean.
-    const officialVisitors = getJourney(req).officialVisit?.officialVisitors || []
+    // The booking is done — clear the journey so a refresh or "book another"
+    // starts clean. Visitor details are read from the persisted visit, so the
+    // page still renders correctly on refresh.
     getJourney(req).officialVisit = undefined
 
     return res.render('pages/manage/confirmVisit', {
-      hideBetaBanner: false,
       visit,
       prisoner: visit.prisoner,
-      officialVisitors,
+      officialVisitors: [...visit.officialVisitors, ...visit.socialVisitors],
       officialVisitId: visit.officialVisitId,
     })
   }

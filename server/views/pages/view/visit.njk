@@ -1,5 +1,6 @@
 {% extends "partials/layout.njk" %}
 {% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
 
 {% set pageTitle = "Official visit details" %}
 {% set backUrl = "/view/list" %}
@@ -16,7 +17,24 @@
       { key: { text: "Location" }, value: { text: visit.locationDescription } },
       { key: { text: "Visit type" }, value: { text: visit.visitTypeDescription } },
       { key: { text: "Status" }, value: { text: visit.visitStatusDescription } },
-      { key: { text: "Comments" }, value: { text: visit.comments or "None" } }
+      { key: { text: "Staff notes" }, value: { text: visit.staffNotes or "None" } },
+      { key: { text: "Prisoner notes" }, value: { text: visit.prisonerNotes or "None" } }
     ]
   }) }}
+
+  <h2 class="govuk-heading-m">Visitors</h2>
+  {% set visitors = visit.officialVisitors.concat(visit.socialVisitors) %}
+  {% if (visitors | length) > 0 %}
+    <ul class="govuk-list govuk-list--bullet">
+      {% for contact in visitors %}
+        <li>{{ contact.firstName }} {{ contact.lastName }} ({{ contact.relationshipDescription }})</li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p class="govuk-body">No visitors recorded.</p>
+  {% endif %}
+
+  {% if user | hasPermission(PERMISSION.MANAGE) %}
+    {{ govukButton({ text: "Amend this visit", href: "/manage/amend/" + visit.officialVisitId }) }}
+  {% endif %}
 {% endblock %}

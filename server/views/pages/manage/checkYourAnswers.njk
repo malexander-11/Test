@@ -54,11 +54,26 @@
   }) }}
 
   <h2 class="govuk-heading-m">Visitors</h2>
-  <ul class="govuk-list govuk-list--bullet">
-    {% for contact in contacts %}
-      <li>{{ contact.firstName }} {{ contact.lastName }} ({{ contact.relationshipDescription }})</li>
-    {% endfor %}
-  </ul>
+  {% for contact in contacts %}
+    <h3 class="govuk-heading-s govuk-!-margin-bottom-1">{{ contact.firstName }} {{ contact.lastName }} ({{ contact.relationshipDescription }})</h3>
+    {% set rows = [
+      { key: { text: "Needs assistance?" }, value: { text: "Yes" if contact.assistedVisit else "No" } },
+      { key: { text: "Assistance details" }, value: { text: contact.assistanceNotes or "None" } } if contact.assistedVisit
+    ] %}
+    {% if showEquipment %}
+      {% set rows = (rows.push(
+        { key: { text: "Needs equipment?" }, value: { text: "Yes" if contact.equipment else "No" } }
+      ), rows) %}
+      {% if contact.equipment %}
+        {% set rows = (rows.push(
+          { key: { text: "Equipment details" }, value: { text: contact.equipmentNotes or "None" } }
+        ), rows) %}
+      {% endif %}
+    {% endif %}
+    {{ govukSummaryList({ classes: "govuk-!-margin-bottom-6", rows: rows | filterNonFalsy }) }}
+  {% else %}
+    <p class="govuk-body">No visitors selected.</p>
+  {% endfor %}
 
   <form method="post">
     {{ govukButton({ text: "Create official visit" }) }}

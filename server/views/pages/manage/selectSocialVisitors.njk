@@ -1,10 +1,9 @@
 {% extends "partials/layout.njk" %}
-{% from "govuk/components/radios/macro.njk" import govukRadios %}
+{% from "govuk/components/checkboxes/macro.njk" import govukCheckboxes %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "partials/createJourneyHeader.njk" import createJourneyHeader %}
 
-{% set pageTitle = "Choose a date and time" %}
-{% set backUrl = "/manage/create/visit-type" %}
+{% set pageTitle = "Are any social contacts visiting?" %}
 
 {% block content %}
   {{ createJourneyHeader(prisoner, stepsChecked) }}
@@ -12,9 +11,9 @@
   <span class="govuk-hint">Book an official visit</span>
 
   <form method="post">
-    {{ govukRadios({
-      idPrefix: "timeSlot",
-      name: "timeSlot",
+    {{ govukCheckboxes({
+      idPrefix: "visitors",
+      name: "visitors",
       fieldset: {
         legend: {
           text: pageTitle,
@@ -22,8 +21,8 @@
           classes: "govuk-fieldset__legend--l"
         }
       },
-      items: items,
-      errorMessage: validationErrors | findError('timeSlot')
+      hint: { text: "Optional. Select any approved social contacts also attending this visit." },
+      items: items
     }) }}
 
     {{ govukButton({ text: submitText or "Continue" }) }}

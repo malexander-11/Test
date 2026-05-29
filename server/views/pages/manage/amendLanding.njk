@@ -1,0 +1,71 @@
+{% extends "partials/layout.njk" %}
+{% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+
+{% set pageTitle = "Amend official visit" %}
+
+{% block content %}
+  <span class="govuk-hint">{{ prisoner | firstNameSpaceLastName }} ({{ prisoner.prisonerNumber }})</span>
+  <h1 class="govuk-heading-l">{{ pageTitle }}</h1>
+  <p class="govuk-body">Change any detail below. Each change is saved as soon as you confirm it.</p>
+
+  <h2 class="govuk-heading-m">Visit details</h2>
+  {{ govukSummaryList({
+    rows: [
+      {
+        key: { text: "Visit type" },
+        value: { text: visit.visitTypeDescription },
+        actions: { items: [{ href: base + "/visit-type", text: "Change", visuallyHiddenText: "the type of visit" }] }
+      },
+      {
+        key: { text: "Date" },
+        value: { text: visit.visitDate | formatDate("EEEE, d MMMM yyyy") },
+        actions: { items: [{ href: base + "/time-slot", text: "Change", visuallyHiddenText: "the date of the visit" }] }
+      },
+      {
+        key: { text: "Time" },
+        value: { text: (visit.startTime | timeStringTo12HourPretty) + " to " + (visit.endTime | timeStringTo12HourPretty) },
+        actions: { items: [{ href: base + "/time-slot", text: "Change", visuallyHiddenText: "the time of the visit" }] }
+      },
+      {
+        key: { text: "Location" },
+        value: { text: visit.locationDescription },
+        actions: { items: [{ href: base + "/time-slot", text: "Change", visuallyHiddenText: "the location of the visit" }] }
+      },
+      {
+        key: { text: "Staff notes" },
+        value: { text: visit.staffNotes or "None" },
+        actions: { items: [{ href: base + "/comments", text: "Change", visuallyHiddenText: "staff notes" }] }
+      },
+      {
+        key: { text: "Prisoner notes" },
+        value: { text: visit.prisonerNotes or "None" },
+        actions: { items: [{ href: base + "/comments", text: "Change", visuallyHiddenText: "prisoner notes" }] }
+      }
+    ]
+  }) }}
+
+  <h2 class="govuk-heading-m">
+    Visitors
+    <a class="govuk-link govuk-link--no-visited-state govuk-body govuk-!-margin-left-3" href="{{ base }}/select-official-visitors">Change official</a>
+    <a class="govuk-link govuk-link--no-visited-state govuk-body govuk-!-margin-left-3" href="{{ base }}/select-social-visitors">Change social</a>
+    <a class="govuk-link govuk-link--no-visited-state govuk-body govuk-!-margin-left-3" href="{{ base }}/assistance-required">Assistance</a>
+    {% if showEquipment %}
+      <a class="govuk-link govuk-link--no-visited-state govuk-body govuk-!-margin-left-3" href="{{ base }}/equipment">Equipment</a>
+    {% endif %}
+  </h2>
+  {% for contact in contacts %}
+    <h3 class="govuk-heading-s govuk-!-margin-bottom-1">{{ contact.firstName }} {{ contact.lastName }} ({{ contact.relationshipDescription }})</h3>
+    {% set rows = [
+      { key: { text: "Needs assistance?" }, value: { text: "Yes" if contact.assistedVisit else "No" } }
+    ] %}
+    {% if showEquipment %}
+      {% set rows = (rows.push({ key: { text: "Needs equipment?" }, value: { text: "Yes" if contact.equipment else "No" } }), rows) %}
+    {% endif %}
+    {{ govukSummaryList({ classes: "govuk-!-margin-bottom-6", rows: rows }) }}
+  {% else %}
+    <p class="govuk-body">No visitors selected.</p>
+  {% endfor %}
+
+  {{ govukButton({ text: "Return to visit details", href: "/view/visit/" + visit.officialVisitId, classes: "govuk-button--secondary" }) }}
+{% endblock %}

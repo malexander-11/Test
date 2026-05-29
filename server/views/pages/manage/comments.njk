@@ -39,6 +39,6 @@
       errorMessage: validationErrors | findError("prisonerNotes")
     }) }}
 
-    {{ govukButton({ text: "Continue" }) }}
+    {{ govukButton({ text: submitText or "Continue" }) }}
   </form>
 {% endblock %}

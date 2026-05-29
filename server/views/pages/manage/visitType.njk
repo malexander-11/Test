@@ -26,6 +26,6 @@
       errorMessage: validationErrors | findError('visitType')
     }) }}
 
-    {{ govukButton({ text: "Continue" }) }}
+    {{ govukButton({ text: submitText or "Continue" }) }}
   </form>
 {% endblock %}

@@ -53,6 +53,7 @@ export default function nunjucksSetup(app: express.Express): void {
   njkEnv.addFilter('hasPermission', (user: { permissions?: Permission[] }, permission: Permission) =>
     Boolean(user?.permissions?.includes(permission)),
   )
+  njkEnv.addFilter('filterNonFalsy', (items: unknown[]) => items.filter(Boolean))
   // The real build produces a hashed asset manifest; in the dummy assets are
   // served at stable paths, so assetMap is just a passthrough.
   njkEnv.addFilter('assetMap', (url: string) => url)
