@@ -1,0 +1,16 @@
+{% if not hideBetaBanner %}
+  {{ govukPhaseBanner({
+    tag: { text: "Beta" },
+    html: 'This is a dummy version of the service for local development and tinkering.'
+  }) }}
+{% endif %}
+
+{% if environmentName %}
+  <p class="govuk-body govuk-!-margin-top-2">
+    <strong class="govuk-tag {{ environmentNameColour }}">{{ environmentName }}</strong>
+  </p>
+{% endif %}
+
+{% if backUrl %}
+  {{ govukBackLink({ text: "Back", href: backUrl }) }}
+{% endif %}

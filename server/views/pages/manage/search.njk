@@ -1,0 +1,22 @@
+{% extends "partials/layout.njk" %}
+{% from "govuk/components/input/macro.njk" import govukInput %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+
+{% set pageTitle = "Search for a prisoner" %}
+{% set backUrl = "/" %}
+
+{% block content %}
+  <span class="govuk-hint">Book an official visit</span>
+  <h1 class="govuk-heading-l">{{ pageTitle }}</h1>
+
+  <form method="get" action="/manage/create/search-results">
+    {{ govukInput({
+      id: "query",
+      name: "query",
+      classes: "govuk-input--width-20",
+      label: { text: "Search by prisoner name or prisoner ID" },
+      hint: { text: "For example, Smith or A1234BC" }
+    }) }}
+    {{ govukButton({ text: "Search" }) }}
+  </form>
+{% endblock %}

@@ -1,0 +1,32 @@
+/* Small custom styles for the dummy service. The real service compiles a much
+   larger SCSS bundle; here we only style the homepage cards. */
+
+.card-group {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.card-group__item {
+  margin-bottom: 20px;
+}
+
+.card {
+  border: 1px solid #b1b4b6;
+  padding: 20px;
+  height: 100%;
+  box-sizing: border-box;
+}
+
+.card--clickable:hover {
+  border-color: #1d70b8;
+  box-shadow: 0 0 0 1px #1d70b8;
+  cursor: pointer;
+}
+
+.card__heading {
+  margin-bottom: 10px;
+}
+
+.card__description {
+  margin-bottom: 0;
+}

@@ -1,0 +1,36 @@
+{% extends "partials/layout.njk" %}
+{% from "govuk/components/table/macro.njk" import govukTable %}
+
+{% set pageTitle = "Select a prisoner" %}
+{% set backUrl = "/manage/create/search" %}
+
+{% block content %}
+  <span class="govuk-hint">Book an official visit</span>
+  <h1 class="govuk-heading-l">{{ pageTitle }}</h1>
+
+  {% if query %}
+    <p class="govuk-body">Showing results for "<strong>{{ query }}</strong>".</p>
+  {% endif %}
+
+  {% set rows = [] %}
+  {% for prisoner in results %}
+    {% set rows = (rows.push([
+      { text: prisoner | lastNameCommaFirstName },
+      { text: prisoner.prisonerNumber },
+      { html: '<a class="govuk-link govuk-link--no-visited-state" href="#">Select</a>' }
+    ]), rows) %}
+  {% endfor %}
+
+  {% if rows.length > 0 %}
+    {{ govukTable({
+      head: [
+        { text: "Name" },
+        { text: "Prison number" },
+        { text: "Action" }
+      ],
+      rows: rows
+    }) }}
+  {% else %}
+    <p class="govuk-body">No prisoners found.</p>
+  {% endif %}
+{% endblock %}

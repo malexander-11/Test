@@ -1,0 +1,30 @@
+{% extends "partials/layout.njk" %}
+{% from "govuk/components/table/macro.njk" import govukTable %}
+{% from "govuk/components/tag/macro.njk" import govukTag %}
+
+{% set pageTitle = "Official visit locations" %}
+{% set backUrl = "/" %}
+
+{% block content %}
+  <span class="govuk-hint">Administer days, slots and locations</span>
+  <h1 class="govuk-heading-l">{{ pageTitle }}</h1>
+
+  {% set rows = [] %}
+  {% for location in locations %}
+    {% set statusHtml = govukTag({ text: "Enabled", classes: "govuk-tag--green" }) if location.enabled else govukTag({ text: "Disabled", classes: "govuk-tag--grey" }) %}
+    {% set rows = (rows.push([
+      { text: location.locationName },
+      { text: location.locationId },
+      { html: statusHtml }
+    ]), rows) %}
+  {% endfor %}
+
+  {{ govukTable({
+    head: [
+      { text: "Location" },
+      { text: "Reference" },
+      { text: "Status" }
+    ],
+    rows: rows
+  }) }}
+{% endblock %}

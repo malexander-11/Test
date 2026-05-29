@@ -1,0 +1,16 @@
+{% extends "partials/layout.njk" %}
+
+{% set pageTitle = "Error" %}
+
+{% block content %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <h1 class="govuk-heading-l">{{ "Page not found" if status == 404 else "Sorry, there is a problem with the service" }}</h1>
+      <p class="govuk-body">{{ message }}</p>
+      {% if stack %}
+        <pre class="govuk-body" style="white-space: pre-wrap;">{{ stack }}</pre>
+      {% endif %}
+      <p class="govuk-body"><a class="govuk-link" href="/">Return to the homepage</a></p>
+    </div>
+  </div>
+{% endblock %}

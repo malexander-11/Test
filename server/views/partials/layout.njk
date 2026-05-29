@@ -1,0 +1,43 @@
+{% extends "govuk/template.njk" %}
+
+{% from "govuk/components/header/macro.njk" import govukHeader %}
+{% from "govuk/components/service-navigation/macro.njk" import govukServiceNavigation %}
+{% from "govuk/components/footer/macro.njk" import govukFooter %}
+{% from "govuk/components/phase-banner/macro.njk" import govukPhaseBanner %}
+{% from "govuk/components/back-link/macro.njk" import govukBackLink %}
+
+{% block head %}
+  <link href="{{ '/assets/govuk/govuk-frontend.min.css' | assetMap }}" rel="stylesheet" />
+  <link href="{{ '/assets/moj/moj-frontend.min.css' | assetMap }}" rel="stylesheet" />
+  <link href="{{ '/assets/css/application.css' | assetMap }}" rel="stylesheet" />
+{% endblock %}
+
+{% block pageTitle %}{{ [pageTitle, "Official visits", "DPS"] | select() | join(" - ") }}{% endblock %}
+
+{% block header %}
+  {{ govukHeader({
+    homepageUrl: "https://www.gov.uk",
+    classes: "govuk-header--full-width-border"
+  }) }}
+  {{ govukServiceNavigation({
+    serviceName: applicationName,
+    serviceUrl: "/"
+  }) }}
+{% endblock %}
+
+{% block beforeContent %}
+  {% include 'partials/beforeContent.njk' %}
+{% endblock %}
+
+{% block footer %}
+  {{ govukFooter() }}
+{% endblock %}
+
+{% block bodyEnd %}
+  <script type="module" src="{{ '/assets/govuk/govuk-frontend.min.js' | assetMap }}"></script>
+  <script type="module" nonce="{{ cspNonce }}">
+    import { initAll } from "{{ '/assets/govuk/govuk-frontend.min.js' | assetMap }}"
+    initAll()
+  </script>
+  {% block pageScripts %}{% endblock %}
+{% endblock %}

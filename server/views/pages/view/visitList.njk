@@ -1,0 +1,51 @@
+{% extends "partials/layout.njk" %}
+{% from "govuk/components/table/macro.njk" import govukTable %}
+{% from "govuk/components/input/macro.njk" import govukInput %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+
+{% set pageTitle = "Search for an official visit" %}
+{% set backUrl = "/" %}
+
+{% block content %}
+  <span class="govuk-hint">Manage existing official visits</span>
+  <h1 class="govuk-heading-l">{{ pageTitle }}</h1>
+
+  <form method="get" class="govuk-!-margin-bottom-6">
+    {{ govukInput({
+      id: "prisoner",
+      name: "prisoner",
+      value: filter.prisoner,
+      classes: "govuk-input--width-20",
+      label: { text: "Search by prisoner name or prisoner ID" }
+    }) }}
+    {{ govukButton({ text: "Search" }) }}
+  </form>
+
+  {% set rows = [] %}
+  {% for visit in visits %}
+    {% set rows = (rows.push([
+      { html: (visit.startTime | timeStringTo12HourPretty) + " to " + (visit.endTime | timeStringTo12HourPretty) + "<br/>" + (visit.visitDate | formatDate) },
+      { text: visit.locationDescription },
+      { text: visit.visitTypeDescription },
+      { html: (visit.prisoner | lastNameCommaFirstName) + "<br/>" + visit.prisoner.prisonerNumber },
+      { text: visit.visitStatusDescription },
+      { html: '<a class="govuk-link govuk-link--no-visited-state" href="/view/visit/' + visit.officialVisitId + '">Select</a>' }
+    ]), rows) %}
+  {% endfor %}
+
+  {% if rows.length > 0 %}
+    {{ govukTable({
+      head: [
+        { text: "Date and time" },
+        { text: "Location" },
+        { text: "Visit type" },
+        { text: "Prisoner" },
+        { text: "Status" },
+        { text: "Action" }
+      ],
+      rows: rows
+    }) }}
+  {% else %}
+    <p class="govuk-body">No visits found matching the current filters.</p>
+  {% endif %}
+{% endblock %}

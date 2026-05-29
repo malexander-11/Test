@@ -1,0 +1,22 @@
+{% extends "partials/layout.njk" %}
+{% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
+
+{% set pageTitle = "Official visit details" %}
+{% set backUrl = "/view/list" %}
+
+{% block content %}
+  <span class="govuk-hint">{{ visit.prisoner | firstNameSpaceLastName }} ({{ visit.prisoner.prisonerNumber }})</span>
+  <h1 class="govuk-heading-l">{{ pageTitle }}</h1>
+
+  {{ govukSummaryList({
+    rows: [
+      { key: { text: "Prisoner" }, value: { text: (visit.prisoner | firstNameSpaceLastName) + " (" + visit.prisoner.prisonerNumber + ")" } },
+      { key: { text: "Date" }, value: { text: visit.visitDate | formatDate } },
+      { key: { text: "Time" }, value: { text: (visit.startTime | timeStringTo12HourPretty) + " to " + (visit.endTime | timeStringTo12HourPretty) } },
+      { key: { text: "Location" }, value: { text: visit.locationDescription } },
+      { key: { text: "Visit type" }, value: { text: visit.visitTypeDescription } },
+      { key: { text: "Status" }, value: { text: visit.visitStatusDescription } },
+      { key: { text: "Comments" }, value: { text: visit.comments or "None" } }
+    ]
+  }) }}
+{% endblock %}
