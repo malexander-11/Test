@@ -28,6 +28,22 @@ the full **book a visit** journey, and the **amend** journey.
 
 ## Running it
 
+### In the browser, with no local setup (GitHub Codespaces)
+
+On the GitHub repo, click **Code ▸ Codespaces ▸ Create codespace on this branch**.
+The included [`.devcontainer`](.devcontainer/devcontainer.json) runs `npm install`
+for you; then in the Codespace terminal run:
+
+```bash
+npm run start:dev
+```
+
+Port 3000 is auto-forwarded — Codespaces opens a clickable preview (or use the
+**Ports** tab) so you can click through the whole service in your browser without
+downloading anything.
+
+### Locally
+
 ```bash
 npm install
 npm run start:dev
