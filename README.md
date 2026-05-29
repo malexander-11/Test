@@ -18,6 +18,14 @@ strips out everything that needs external infrastructure:
 
 So it runs with **zero configuration**.
 
+## Screenshots
+
+Want to see it without running it? Every page is captured in
+[`docs/screenshots/`](docs/screenshots/) — the home dashboard, view/admin pages,
+the full **book a visit** journey, and the **amend** journey.
+
+[![Home dashboard](docs/screenshots/01-home.png)](docs/screenshots/)
+
 ## Running it
 
 ```bash
