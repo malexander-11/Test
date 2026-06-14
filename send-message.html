@@ -26,10 +26,7 @@
       width: 36px; height: 36px;
       display: grid; grid-template-columns: 1fr 1fr; gap: 2px;
     }
-    .logo-icon span {
-      border-radius: 50%;
-      display: block;
-    }
+    .logo-icon span { border-radius: 50%; display: block; }
     .logo-icon .tl { background: #e63329; }
     .logo-icon .tr { background: #f5a623; }
     .logo-icon .bl { background: #4caf50; }
@@ -57,46 +54,91 @@
     /* ── Main content ── */
     .main { max-width: 700px; margin: 0 auto; padding: 20px 16px 40px; }
 
-    .section-label {
-      font-size: 13px;
-      color: #555;
-      margin-bottom: 4px;
-    }
-    .section-heading {
-      font-size: 20px;
-      font-weight: bold;
-      margin-bottom: 6px;
-    }
+    .section-label { font-size: 13px; color: #555; margin-bottom: 4px; }
+    .section-heading { font-size: 20px; font-weight: bold; margin-bottom: 6px; }
 
     /* ── Step bar ── */
     .step-label { font-size: 13px; color: #c00; font-weight: bold; margin-bottom: 6px; }
-    .progress-bar {
-      display: flex; gap: 5px; margin-bottom: 10px;
-    }
-    .progress-bar span {
-      flex: 1; height: 5px; border-radius: 2px;
-    }
-    .progress-bar .done { background: #1a5c38; }
+    .progress-bar { display: flex; gap: 5px; margin-bottom: 10px; }
+    .progress-bar span { flex: 1; height: 5px; border-radius: 2px; }
+    .progress-bar .done    { background: #1a5c38; }
     .progress-bar .current { background: #2196f3; }
-    .progress-bar .todo { background: #ccc; }
-
+    .progress-bar .todo    { background: #ccc; }
     .saved-msg { font-size: 13px; color: #333; margin-bottom: 20px; }
 
-    /* ── Review sections ── */
-    .review-section {
-      border: 1px solid #ddd;
-      margin-bottom: 20px;
+    /* ── AI Assistant banner ── */
+    .ai-assistant {
+      background: #f0f7ff;
+      border: 1.5px solid #2196f3;
+      border-radius: 6px;
+      padding: 16px 18px;
+      margin-bottom: 24px;
     }
+    .ai-assistant-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+    .ai-badge {
+      background: #2196f3;
+      color: #fff;
+      font-size: 11px;
+      font-weight: bold;
+      padding: 2px 7px;
+      border-radius: 3px;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      flex-shrink: 0;
+    }
+    .ai-assistant-header strong {
+      font-size: 14px;
+      color: #0d47a1;
+    }
+    .ai-assistant p {
+      font-size: 13px;
+      color: #1a237e;
+      margin-bottom: 10px;
+      line-height: 1.5;
+    }
+    .ai-tips { list-style: none; padding: 0; margin: 0; }
+    .ai-tips li {
+      display: flex;
+      gap: 8px;
+      align-items: flex-start;
+      font-size: 13px;
+      color: #333;
+      padding: 7px 10px;
+      background: #fff;
+      border: 1px solid #bbdefb;
+      border-radius: 4px;
+      margin-bottom: 6px;
+      line-height: 1.5;
+    }
+    .ai-tips li:last-child { margin-bottom: 0; }
+    .ai-tip-icon { font-size: 15px; flex-shrink: 0; margin-top: 1px; }
+    .ai-tip-text strong { display: block; color: #0d47a1; margin-bottom: 2px; }
+    .ai-dismiss {
+      margin-top: 12px;
+      background: none;
+      border: 1px solid #90caf9;
+      color: #1565c0;
+      font-size: 12px;
+      padding: 4px 12px;
+      border-radius: 3px;
+      cursor: pointer;
+    }
+    .ai-dismiss:hover { background: #e3f2fd; }
+
+    /* ── Review sections ── */
+    .review-section { border: 1px solid #ddd; margin-bottom: 20px; }
     .review-section-header {
       background: #fff;
       padding: 12px 14px;
       border-bottom: 1px solid #ddd;
     }
-    .review-section-header h3 {
-      font-size: 16px;
-      font-weight: bold;
-      color: #c00;
-    }
+    .review-section-header h3 { font-size: 16px; font-weight: bold; color: #c00; }
+
     .review-row {
       display: flex;
       padding: 10px 14px;
@@ -126,9 +168,74 @@
       line-height: 1.5;
       white-space: pre-wrap;
     }
-    .review-value .highlight {
-      color: #c00;
+    .review-value .highlight { color: #c00; }
+
+    /* ── AI suggestion inline ── */
+    .review-value-wrap { flex: 1; display: flex; flex-direction: column; gap: 6px; }
+    .review-value-wrap .review-value { margin: 0; }
+
+    .ai-suggestion {
+      background: #fff8e1;
+      border: 1.5px solid #f9a825;
+      border-radius: 4px;
+      padding: 9px 12px;
+      font-size: 12px;
+      line-height: 1.5;
     }
+    .ai-suggestion-header {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 6px;
+    }
+    .ai-badge-sm {
+      background: #f9a825;
+      color: #fff;
+      font-size: 10px;
+      font-weight: bold;
+      padding: 1px 6px;
+      border-radius: 3px;
+      letter-spacing: 0.4px;
+      text-transform: uppercase;
+    }
+    .ai-suggestion-header span { font-weight: bold; color: #e65100; font-size: 12px; }
+    .ai-suggestion p { color: #5d4037; margin-bottom: 8px; }
+    .ai-suggestion-proposed {
+      background: #fff;
+      border: 1px solid #ffe082;
+      border-radius: 3px;
+      padding: 5px 9px;
+      font-size: 12px;
+      color: #1b5e20;
+      font-weight: bold;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .ai-suggestion-proposed::before { content: "✓"; color: #2e7d32; font-size: 13px; }
+    .ai-suggestion-actions { display: flex; gap: 8px; }
+    .btn-ai-accept {
+      background: #2e7d32;
+      color: #fff;
+      border: none;
+      padding: 4px 12px;
+      font-size: 12px;
+      border-radius: 3px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    .btn-ai-accept:hover { background: #1b5e20; }
+    .btn-ai-ignore {
+      background: none;
+      border: 1px solid #bcaaa4;
+      color: #795548;
+      padding: 4px 12px;
+      font-size: 12px;
+      border-radius: 3px;
+      cursor: pointer;
+    }
+    .btn-ai-ignore:hover { background: #efebe9; }
 
     /* ── Submit button ── */
     .submit-area { margin-top: 24px; }
@@ -193,15 +300,58 @@
 
   <p class="step-label">Step 7 of 7</p>
   <div class="progress-bar" role="progressbar" aria-valuenow="7" aria-valuemin="1" aria-valuemax="7">
-    <span class="done"></span>
-    <span class="done"></span>
-    <span class="done"></span>
-    <span class="done"></span>
-    <span class="done"></span>
-    <span class="done"></span>
+    <span class="done"></span><span class="done"></span><span class="done"></span>
+    <span class="done"></span><span class="done"></span><span class="done"></span>
     <span class="current"></span>
   </div>
   <p class="saved-msg">Progress saved.</p>
+
+  <!-- ── AI Assistant Panel ── -->
+  <div class="ai-assistant" id="ai-panel">
+    <div class="ai-assistant-header">
+      <span class="ai-badge">AI</span>
+      <strong>Tips to get a faster, more accurate response</strong>
+    </div>
+    <p>Based on your message, here are a few things that could help the Adult Social Care team deal with your enquiry more quickly.</p>
+    <ul class="ai-tips">
+      <li>
+        <span class="ai-tip-icon">🩺</span>
+        <span class="ai-tip-text">
+          <strong>Add your parent's GP details</strong>
+          If a care needs assessment is required, the team will contact the GP. Providing their name and surgery now can cut 2–5 days off response time.
+        </span>
+      </li>
+      <li>
+        <span class="ai-tip-icon">📋</span>
+        <span class="ai-tip-text">
+          <strong>Mention any existing diagnoses or conditions</strong>
+          If your parent has been diagnosed with anything relevant (e.g. dementia, mobility issues, diabetes), including this helps the team prioritise and route your case correctly.
+        </span>
+      </li>
+      <li>
+        <span class="ai-tip-icon">🏠</span>
+        <span class="ai-tip-text">
+          <strong>Confirm whether your parent is a Brent resident</strong>
+          Adult social care is provided by the borough where the person lives. Confirming this up front prevents delays caused by referrals to another authority.
+        </span>
+      </li>
+      <li>
+        <span class="ai-tip-icon">💡</span>
+        <span class="ai-tip-text">
+          <strong>You may be able to self-serve</strong>
+          Brent's <a href="#" style="color:#1565c0;">Care Act self-referral form</a> lets you request a care needs assessment directly — no waiting for a callback. This is often faster than a general enquiry for first-time requests.
+        </span>
+      </li>
+      <li>
+        <span class="ai-tip-icon">📞</span>
+        <span class="ai-tip-text">
+          <strong>Add a phone number if urgent</strong>
+          You haven't provided a contact number. If this is time-sensitive, adding one lets the team call you rather than wait for email replies.
+        </span>
+      </li>
+    </ul>
+    <button class="ai-dismiss" onclick="document.getElementById('ai-panel').style.display='none'">Dismiss suggestions</button>
+  </div>
 
   <!-- Section 1 -->
   <div class="review-section">
@@ -214,14 +364,29 @@
     </div>
   </div>
 
-  <!-- Section 2 -->
+  <!-- Section 2 – with AI suggestion -->
   <div class="review-section">
     <div class="review-section-header">
       <h3>What do you need help with?</h3>
     </div>
     <div class="review-row">
       <div class="review-label">What do you need help with?</div>
-      <div class="review-value">Care assessments enquiry</div>
+      <div class="review-value-wrap">
+        <div class="review-value" id="help-value">General help and support</div>
+        <!-- AI suggestion -->
+        <div class="ai-suggestion" id="ai-suggestion-box">
+          <div class="ai-suggestion-header">
+            <span class="ai-badge-sm">AI</span>
+            <span>Suggested improvement</span>
+          </div>
+          <p>Your message is specifically asking about a care needs assessment. <strong>"General help and support"</strong> is a broad category that may slow routing — the following category matches your enquiry more closely and will reach the right team faster.</p>
+          <div class="ai-suggestion-proposed">Care assessments enquiry</div>
+          <div class="ai-suggestion-actions">
+            <button class="btn-ai-accept" onclick="acceptSuggestion()">Accept suggestion</button>
+            <button class="btn-ai-ignore" onclick="document.getElementById('ai-suggestion-box').style.display='none'">Ignore</button>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -321,6 +486,18 @@ James</div>
     in accordance with the Data Protection Act 2018.
   </p>
 </main>
+
+<script>
+  function acceptSuggestion() {
+    document.getElementById('help-value').textContent = 'Care assessments enquiry';
+    document.getElementById('help-value').style.color = '#2e7d32';
+    document.getElementById('help-value').style.fontWeight = 'bold';
+    const box = document.getElementById('ai-suggestion-box');
+    box.innerHTML = '<div style="display:flex;align-items:center;gap:6px;font-size:12px;color:#2e7d32;padding:2px 0"><span style="font-size:15px;">✓</span> <strong>AI suggestion applied.</strong> Category updated to <em>Care assessments enquiry</em>.</div>';
+    box.style.background = '#f1f8e9';
+    box.style.borderColor = '#a5d6a7';
+  }
+</script>
 
 </body>
 </html>
