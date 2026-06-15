@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Send us a message – Brent Council</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 14px;
+      color: #333;
+      background: #f5f5f5;
+    }
+
+    .site-header {
+      background: #fff;
+      padding: 10px 20px;
+      border-bottom: 1px solid #ddd;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .logo-icon {
+      width: 36px; height: 36px;
+      display: grid; grid-template-columns: 1fr 1fr; gap: 2px;
+    }
+    .logo-icon span { border-radius: 50%; display: block; }
+    .logo-icon .tl { background: #e63329; }
+    .logo-icon .tr { background: #f5a623; }
+    .logo-icon .bl { background: #4caf50; }
+    .logo-icon .br { background: #2196f3; }
+    .site-header-title { font-size: 20px; font-weight: bold; color: #222; }
+
+    .green-banner {
+      background: #1a5c38;
+      color: #fff;
+      padding: 6px 20px;
+      font-size: 13px;
+    }
+    .green-banner a { color: #fff; text-decoration: underline; }
+
+    .page-title-bar {
+      background: #1a5c38;
+      color: #fff;
+      padding: 18px 20px 22px;
+    }
+    .page-title-bar h1 { font-size: 26px; font-weight: bold; }
+
+    .main { max-width: 700px; margin: 0 auto; padding: 24px 16px 48px; }
+
+    .step-label { font-size: 13px; color: #c00; font-weight: bold; margin-bottom: 6px; }
+    .progress-bar { display: flex; gap: 5px; margin-bottom: 10px; }
+    .progress-bar span { flex: 1; height: 5px; border-radius: 2px; }
+    .progress-bar .done    { background: #1a5c38; }
+    .progress-bar .current { background: #2196f3; }
+    .progress-bar .todo    { background: #ccc; }
+    .saved-msg { font-size: 13px; color: #333; margin-bottom: 24px; }
+
+    .form-card {
+      background: #fff;
+      border: 1px solid #ddd;
+      padding: 24px;
+      margin-bottom: 20px;
+    }
+    .form-card h2 {
+      font-size: 18px;
+      font-weight: bold;
+      color: #c00;
+      margin-bottom: 20px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid #eee;
+    }
+
+    .field { margin-bottom: 18px; }
+    .field:last-child { margin-bottom: 0; }
+    .field label {
+      display: block;
+      font-weight: bold;
+      margin-bottom: 5px;
+      font-size: 13px;
+    }
+    .field .hint {
+      font-size: 12px;
+      color: #666;
+      margin-bottom: 5px;
+    }
+    .field input[type="text"],
+    .field input[type="email"],
+    .field input[type="tel"],
+    .field select,
+    .field textarea {
+      width: 100%;
+      border: 1px solid #aaa;
+      padding: 7px 10px;
+      font-size: 13px;
+      font-family: inherit;
+      color: #333;
+      border-radius: 2px;
+    }
+    .field input:focus,
+    .field select:focus,
+    .field textarea:focus {
+      outline: 3px solid #f9a825;
+      border-color: #333;
+    }
+    .field textarea { min-height: 140px; resize: vertical; line-height: 1.5; }
+
+    .radio-group, .check-group { display: flex; flex-direction: column; gap: 8px; }
+    .radio-opt, .check-opt {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      background: #f9f9f9;
+      border: 1px solid #ddd;
+      padding: 10px 12px;
+      border-radius: 2px;
+      cursor: pointer;
+    }
+    .radio-opt:hover, .check-opt:hover { border-color: #1a5c38; background: #f1f8f4; }
+    .radio-opt input, .check-opt input { margin-top: 2px; flex-shrink: 0; }
+    .radio-opt .opt-label, .check-opt .opt-label { font-size: 13px; }
+    .radio-opt .opt-hint, .check-opt .opt-hint {
+      font-size: 12px;
+      color: #666;
+      margin-top: 2px;
+    }
+
+    .optional-tag {
+      font-size: 11px;
+      color: #666;
+      font-weight: normal;
+      margin-left: 6px;
+    }
+
+    .btn-row { display: flex; align-items: center; gap: 16px; margin-top: 24px; }
+    .btn-primary {
+      background: #1a5c38;
+      color: #fff;
+      border: none;
+      padding: 11px 26px;
+      font-size: 15px;
+      font-weight: bold;
+      cursor: pointer;
+      border-radius: 2px;
+    }
+    .btn-primary:hover { background: #154d2f; }
+    .btn-secondary {
+      background: none;
+      border: none;
+      color: #1a5c38;
+      font-size: 14px;
+      cursor: pointer;
+      text-decoration: underline;
+    }
+
+    .page { display: none; }
+    .page.active { display: block; }
+
+    .team-list { list-style: none; padding: 0; }
+    .team-list li {
+      border: 1px solid #ddd;
+      background: #fff;
+      margin-bottom: 8px;
+    }
+    .team-list li a {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 16px;
+      text-decoration: none;
+      color: #1a5c38;
+      font-weight: bold;
+      font-size: 14px;
+    }
+    .team-list li a:hover { background: #f1f8f4; }
+    .team-list li a::after { content: "›"; font-size: 18px; color: #aaa; }
+    .landing-intro {
+      background: #fff;
+      border: 1px solid #ddd;
+      padding: 16px;
+      margin-bottom: 20px;
+      font-size: 13px;
+      line-height: 1.6;
+      color: #444;
+    }
+
+    .review-section { border: 1px solid #ddd; margin-bottom: 20px; background: #fff; }
+    .review-section-header {
+      padding: 12px 14px;
+      border-bottom: 1px solid #ddd;
+    }
+    .review-section-header h3 { font-size: 16px; font-weight: bold; color: #c00; }
+    .review-row {
+      display: flex;
+      padding: 10px 14px;
+      border-bottom: 1px solid #eee;
+      gap: 10px;
+    }
+    .review-row:last-child { border-bottom: none; }
+    .review-label {
+      width: 160px; min-width: 160px;
+      font-size: 13px; color: #333; font-weight: bold;
+    }
+    .review-value {
+      flex: 1;
+      border: 1px solid #aaa;
+      padding: 5px 8px;
+      font-size: 13px;
+      color: #333;
+      background: #fff;
+      min-height: 30px;
+    }
+    .review-value.placeholder { color: #999; }
+    .review-value.multiline { min-height: 130px; line-height: 1.5; white-space: pre-wrap; }
+    .review-value .highlight { color: #c00; }
+
+    .ai-assistant {
+      background: #f0f7ff;
+      border: 1.5px solid #2196f3;
+      border-radius: 6px;
+      padding: 16px 18px;
+      margin-bottom: 24px;
+    }
+    .ai-assistant-header {
+      display: flex; align-items: center; gap: 8px; margin-bottom: 12px;
+    }
+    .ai-badge {
+      background: #2196f3; color: #fff;
+      font-size: 11px; font-weight: bold;
+      padding: 2px 7px; border-radius: 3px;
+      letter-spacing: 0.5px; text-transform: uppercase;
+      flex-shrink: 0;
+    }
+    .ai-assistant-header strong { font-size: 14px; color: #0d47a1; }
+    .ai-assistant p { font-size: 13px; color: #1a237e; margin-bottom: 10px; line-height: 1.5; }
+    .ai-tips { list-style: none; padding: 0; margin: 0; }
+    .ai-tips li {
+      display: flex; gap: 8px; align-items: flex-start;
+      font-size: 13px; color: #333;
+      padding: 7px 10px;
+      background: #fff; border: 1px solid #bbdefb;
+      border-radius: 4px; margin-bottom: 6px; line-height: 1.5;
+    }
+    .ai-tips li:last-child { margin-bottom: 0; }
+    .ai-tip-icon { font-size: 15px; flex-shrink: 0; margin-top: 1px; }
+    .ai-tip-text strong { display: block; color: #0d47a1; margin-bottom: 2px; }
+    .ai-dismiss {
+      margin-top: 12px;
+      background: none; border: 1px solid #90caf9;
+      color: #1565c0; font-size: 12px;
+      padding: 4px 12px; border-radius: 3px; cursor: pointer;
+    }
+    .ai-dismiss:hover { background: #e3f2fd; }
+
+    .review-value-wrap { flex: 1; display: flex; flex-direction: column; gap: 6px; }
+    .ai-suggestion {
+      background: #fff8e1; border: 1.5px solid #f9a825;
+      border-radius: 4px; padding: 9px 12px; font-size: 12px; line-height: 1.5;
+    }
+    .ai-suggestion-header {
+      display: flex; align-items: center; gap: 6px; margin-bottom: 6px;
+    }
+    .ai-badge-sm {
+      background: #f9a825; color: #fff;
+      font-size: 10px; font-weight: bold;
+      padding: 1px 6px; border-radius: 3px;
+      letter-spacing: 0.4px; text-transform: uppercase;
+    }
+    .ai-suggestion-header span { font-weight: bold; color: #e65100; font-size: 12px; }
+    .ai-suggestion p { color: #5d4037; margin-bottom: 8px; }
+    .ai-suggestion-proposed {
+      background: #fff; border: 1px solid #ffe082;
+      border-radius: 3px; padding: 5px 9px;
+      font-size: 12px; color: #1b5e20; font-weight: bold;
+      margin-bottom: 8px; display: flex; align-items: center; gap: 6px;
+    }
+    .ai-suggestion-proposed::before { content: "✓"; color: #2e7d32; font-size: 13px; }
+    .ai-suggestion-actions { display: flex; gap: 8px; }
+    .btn-ai-accept {
+      background: #2e7d32; color: #fff;
+      border: none; padding: 4px 12px;
+      font-size: 12px; border-radius: 3px; cursor: pointer; font-weight: bold;
+    }
+    .btn-ai-accept:hover { background: #1b5e20; }
+    .btn-ai-ignore {
+      background: none; border: 1px solid #bcaaa4;
+      color: #795548; padding: 4px 12px;
+      font-size: 12px; border-radius: 3px; cursor: pointer;
+    }
+    .btn-ai-ignore:hover { background: #efebe9; }
+
+    .privacy-note {
+      margin-top: 16px; font-size: 12px; color: #555; line-height: 1.6;
+    }
+    .privacy-note a { color: #1a5c38; }
+
+    .char-count { font-size: 11px; color: #666; text-align: right; margin-top: 3px; }
+
+    .section-divider {
+      font-size: 13px; font-weight: bold; color: #555;
+      margin: 20px 0 12px; padding-bottom: 4px;
+      border-bottom: 1px solid #eee;
+    }
+  </style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="logo-icon" aria-hidden="true">
+    <span class="tl"></span><span class="tr"></span>
+    <span class="bl"></span><span class="br"></span>
+  </div>
+  <span class="site-header-title">Brent</span>
+</header>
+
+<nav class="green-banner" aria-label="Breadcrumb" id="breadcrumb">
+  <a href="#">Contact us</a> &rsaquo;
+  <a href="#">Contact our team</a> &rsaquo;
+  <strong id="breadcrumb-tail">Contact our teams</strong>
+</nav>
+
+<div class="page-title-bar">
+  <h1>Send us a message</h1>
+</div>
+
+<!-- LANDING -->
+<div class="page active" id="page-landing">
+  <main class="main">
+    <div class="landing-intro">
+      <p>Use this form to send a message to one of our teams. Select the team you want to contact below. We aim to respond within <strong>5 working days</strong>.</p>
+      <p style="margin-top:8px;">If your enquiry is urgent or an emergency, please call <strong>020 8937 1234</strong>.</p>
+    </div>
+    <ul class="team-list">
+      <li><a href="#" onclick="goTo('page-step1'); return false;">Adult social care</a></li>
+      <li><a href="#" onclick="goTo('page-step1'); return false;">Benefits and council tax</a></li>
+      <li><a href="#" onclick="goTo('page-step1'); return false;">Children's services</a></li>
+      <li><a href="#" onclick="goTo('page-step1'); return false;">Environmental health</a></li>
+      <li><a href="#" onclick="goTo('page-step1'); return false;">Housing</a></li>
+      <li><a href="#" onclick="goTo('page-step1'); return false;">Licensing</a></li>
+      <li><a href="#" onclick="goTo('page-step1'); return false;">Planning</a></li>
+      <li><a href="#" onclick="goTo('page-step1'); return false;">Parking and roads</a></li>
+      <li><a href="#" onclick="goTo('page-step1'); return false;">Waste and recycling</a></li>
+    </ul>
+  </main>
+</div>
+
+<!-- STEP 1 -->
+<div class="page" id="page-step1">
+  <main class="main">
+    <p style="font-size:13px;color:#555;margin-bottom:4px;">Adult social care</p>
+    <h2 style="font-size:20px;font-weight:bold;margin-bottom:6px;">Who are you contacting us about?</h2>
+    <p class="step-label">Step 1 of 7</p>
+    <div class="progress-bar">
+      <span class="current"></span><span class="todo"></span><span class="todo"></span>
+      <span class="todo"></span><span class="todo"></span><span class="todo"></span><span class="todo"></span>
+    </div>
+    <p class="saved-msg">Progress saved.</p>
+    <div class="form-card">
+      <h2>Who are you contacting us about?</h2>
+      <div class="field">
+        <label>Are you contacting us for yourself or someone else?</label>
+        <div class="radio-group">
+          <label class="radio-opt">
+            <input type="radio" name="who" value="myself" checked>
+            <span><span class="opt-label">Myself</span><span class="opt-hint">I need support for myself</span></span>
+          </label>
+          <label class="radio-opt">
+            <input type="radio" name="who" value="someone">
+            <span><span class="opt-label">Someone else</span><span class="opt-hint">I am contacting on behalf of a family member, friend or neighbour</span></span>
+          </label>
+          <label class="radio-opt">
+            <input type="radio" name="who" value="professional">
+            <span><span class="opt-label">As a professional</span><span class="opt-hint">I am a carer, social worker, GP or other professional making a referral</span></span>
+          </label>
+        </div>
+      </div>
+    </div>
+    <div class="btn-row">
+      <button class="btn-primary" onclick="goTo('page-step2')">Save and continue</button>
+      <button class="btn-secondary" onclick="goTo('page-landing')">&#8592; Back</button>
+    </div>
+  </main>
+</div>
+
+<!-- STEP 2 -->
+<div class="page" id="page-step2">
+  <main class="main">
+    <p style="font-size:13px;color:#555;margin-bottom:4px;">Adult social care</p>
+    <h2 style="font-size:20px;font-weight:bold;margin-bottom:6px;">What do you need help with?</h2>
+    <p class="step-label">Step 2 of 7</p>
+    <div class="progress-bar">
+      <span class="done"></span><span class="current"></span><span class="todo"></span>
+      <span class="todo"></span><span class="todo"></span><span class="todo"></span><span class="todo"></span>
+    </div>
+    <p class="saved-msg">Progress saved.</p>
+    <div class="form-card">
+      <h2>What do you need help with?</h2>
+      <div class="field">
+        <label for="help-category">What do you need help with?</label>
+        <div class="hint">Select the option that best describes your enquiry.</div>
+        <select id="help-category">
+          <option value="">-- Please select --</option>
+          <option value="care-assessments">Care assessments enquiry</option>
+          <option value="home-care">Home care and support</option>
+          <option value="direct-payments">Direct payments</option>
+          <option value="blue-badge">Blue badge</option>
+          <option value="residential-care">Residential or nursing care</option>
+          <option value="carers">Carer support</option>
+          <option value="mental-health">Mental health support</option>
+          <option value="safeguarding">Safeguarding concern</option>
+          <option value="general" selected>General help and support</option>
+          <option value="other">Other</option>
+        </select>
+      </div>
+    </div>
+    <div class="btn-row">
+      <button class="btn-primary" onclick="goTo('page-step3')">Save and continue</button>
+      <button class="btn-secondary" onclick="goTo('page-step1')">&#8592; Back</button>
+    </div>
+  </main>
+</div>
+
+<!-- STEP 3 -->
+<div class="page" id="page-step3">
+  <main class="main">
+    <p style="font-size:13px;color:#555;margin-bottom:4px;">Adult social care</p>
+    <h2 style="font-size:20px;font-weight:bold;margin-bottom:6px;">Your message</h2>
+    <p class="step-label">Step 3 of 7</p>
+    <div class="progress-bar">
+      <span class="done"></span><span class="done"></span><span class="current"></span>
+      <span class="todo"></span><span class="todo"></span><span class="todo"></span><span class="todo"></span>
+    </div>
+    <p class="saved-msg">Progress saved.</p>
+    <div class="form-card">
+      <h2>Your message</h2>
+      <div class="field">
+        <label for="summary">Summary</label>
+        <div class="hint">Give a short title for your message (max 100 characters).</div>
+        <input type="text" id="summary" maxlength="100" value="Concern about elderly parent needing some support at home">
+        <div class="char-count" id="summary-count">58 / 100</div>
+      </div>
+      <div class="field">
+        <label for="message">Your message</label>
+        <div class="hint">Please include as much detail as possible. Do not include sensitive personal information such as bank details or passwords.</div>
+        <textarea id="message" oninput="updateCount(this,'msg-count',1000)">Dear Adult Social Care Team,
+
+I am contacting you because I am becoming worried about my elderly parent and think they may need some support at home.
+
+They are still living independently, but I have noticed that they are finding some everyday tasks more difficult, including keeping on top of the house, preparing meals, getting out and about, and generally managing on their own. I do not think they need full-time care, but I wondered whether they might be eligible for some support one or two days a week, or possibly help from a carer visiting at home.
+
+Could you please advise whether we need to request a care needs assessment and what the process for that involves? I would also like to know what funding options might be available, and how long the process typically takes.
+
+Thank you very much for your time. I look forward to hearing from you.
+
+Kind regards,
+James</textarea>
+        <div class="char-count" id="msg-count"></div>
+      </div>
+      <div class="field">
+        <label>Do you have a reference number from a previous contact?</label>
+        <div class="radio-group">
+          <label class="radio-opt"><input type="radio" name="refnum" value="no" checked><span class="opt-label">No</span></label>
+          <label class="radio-opt"><input type="radio" name="refnum" value="yes"><span class="opt-label">Yes</span></label>
+        </div>
+      </div>
+    </div>
+    <div class="btn-row">
+      <button class="btn-primary" onclick="goTo('page-step4')">Save and continue</button>
+      <button class="btn-secondary" onclick="goTo('page-step2')">&#8592; Back</button>
+    </div>
+  </main>
+</div>
+
+<!-- STEP 4 -->
+<div class="page" id="page-step4">
+  <main class="main">
+    <p style="font-size:13px;color:#555;margin-bottom:4px;">Adult social care</p>
+    <h2 style="font-size:20px;font-weight:bold;margin-bottom:6px;">Doctor details and emergency contact</h2>
+    <p class="step-label">Step 4 of 7</p>
+    <div class="progress-bar">
+      <span class="done"></span><span class="done"></span><span class="done"></span>
+      <span class="current"></span><span class="todo"></span><span class="todo"></span><span class="todo"></span>
+    </div>
+    <p class="saved-msg">Progress saved.</p>
+    <div class="form-card">
+      <h2>Doctor details and emergency contact <span class="optional-tag">(optional)</span></h2>
+      <div class="section-divider">GP / Doctor</div>
+      <div class="field"><label for="doctor-name">Doctor's name <span class="optional-tag">(optional)</span></label><input type="text" id="doctor-name"></div>
+      <div class="field"><label for="surgery-name">Surgery name <span class="optional-tag">(optional)</span></label><input type="text" id="surgery-name"></div>
+      <div class="field"><label for="surgery-phone">Surgery phone number <span class="optional-tag">(optional)</span></label><input type="tel" id="surgery-phone"></div>
+      <div class="section-divider">Emergency contact</div>
+      <div class="field"><label for="ec-name">Emergency contact name</label><input type="text" id="ec-name"></div>
+      <div class="field"><label for="ec-phone">Emergency contact phone number</label><input type="tel" id="ec-phone"></div>
+      <div class="field">
+        <label for="ec-relationship">What is their relationship to this person? <span class="optional-tag">(optional)</span></label>
+        <select id="ec-relationship">
+          <option value="">-- Please select --</option>
+          <option>Spouse / partner</option><option>Parent</option><option>Child</option>
+          <option>Sibling</option><option>Friend</option><option>Neighbour</option>
+          <option>Carer</option><option>Other</option>
+        </select>
+      </div>
+    </div>
+    <div class="btn-row">
+      <button class="btn-primary" onclick="goTo('page-step5')">Save and continue</button>
+      <button class="btn-secondary" onclick="goTo('page-step3')">&#8592; Back</button>
+    </div>
+  </main>
+</div>
+
+<!-- STEP 5 -->
+<div class="page" id="page-step5">
+  <main class="main">
+    <p style="font-size:13px;color:#555;margin-bottom:4px;">Adult social care</p>
+    <h2 style="font-size:20px;font-weight:bold;margin-bottom:6px;">Your details</h2>
+    <p class="step-label">Step 5 of 7</p>
+    <div class="progress-bar">
+      <span class="done"></span><span class="done"></span><span class="done"></span>
+      <span class="done"></span><span class="current"></span><span class="todo"></span><span class="todo"></span>
+    </div>
+    <p class="saved-msg">Progress saved.</p>
+    <div class="form-card">
+      <h2>Your details</h2>
+      <div class="field"><label for="fname">First name</label><input type="text" id="fname" value="James"></div>
+      <div class="field"><label for="lname">Last name</label><input type="text" id="lname" value="Smith"></div>
+      <div class="field">
+        <label for="email">Email address</label>
+        <div class="hint">We will send a confirmation to this address.</div>
+        <input type="email" id="email" value="james.smith@example.com">
+      </div>
+      <div class="field">
+        <label for="phone">Phone number <span class="optional-tag">(optional)</span></label>
+        <div class="hint">Including this means we can call you if we need more information, which can speed up your response.</div>
+        <input type="tel" id="phone">
+      </div>
+    </div>
+    <div class="btn-row">
+      <button class="btn-primary" onclick="goTo('page-step6')">Save and continue</button>
+      <button class="btn-secondary" onclick="goTo('page-step4')">&#8592; Back</button>
+    </div>
+  </main>
+</div>
+
+<!-- STEP 6 -->
+<div class="page" id="page-step6">
+  <main class="main">
+    <p style="font-size:13px;color:#555;margin-bottom:4px;">Adult social care</p>
+    <h2 style="font-size:20px;font-weight:bold;margin-bottom:6px;">Confirmation and consent</h2>
+    <p class="step-label">Step 6 of 7</p>
+    <div class="progress-bar">
+      <span class="done"></span><span class="done"></span><span class="done"></span>
+      <span class="done"></span><span class="done"></span><span class="current"></span><span class="todo"></span>
+    </div>
+    <p class="saved-msg">Progress saved.</p>
+    <div class="form-card">
+      <h2>How would you like to receive updates?</h2>
+      <div class="field">
+        <label>Preferred contact method</label>
+        <div class="radio-group">
+          <label class="radio-opt"><input type="radio" name="contact-pref" value="email" checked><span><span class="opt-label">Email</span><span class="opt-hint">Updates sent to james.smith@example.com</span></span></label>
+          <label class="radio-opt"><input type="radio" name="contact-pref" value="phone"><span><span class="opt-label">Phone call</span><span class="opt-hint">A member of the team will call you (requires a phone number)</span></span></label>
+          <label class="radio-opt"><input type="radio" name="contact-pref" value="either"><span class="opt-label">Either &mdash; use whichever is quickest</span></label>
+        </div>
+      </div>
+    </div>
+    <div class="form-card">
+      <h2>Declaration</h2>
+      <div class="field">
+        <div class="check-group">
+          <label class="check-opt"><input type="checkbox" checked><span class="opt-label">I confirm that the information I have provided is accurate to the best of my knowledge.</span></label>
+          <label class="check-opt"><input type="checkbox" checked><span class="opt-label">I understand that Brent Council will use my information to respond to this enquiry and may share it with relevant council departments where necessary.</span></label>
+          <label class="check-opt"><input type="checkbox"><span class="opt-label">I would like to receive information about other Brent Council services that may be relevant to me. <span class="optional-tag">(optional)</span></span></label>
+        </div>
+      </div>
+    </div>
+    <div class="btn-row">
+      <button class="btn-primary" onclick="goTo('page-step7')">Save and continue</button>
+      <button class="btn-secondary" onclick="goTo('page-step5')">&#8592; Back</button>
+    </div>
+  </main>
+</div>
+
+<!-- STEP 7 – Review -->
+<div class="page" id="page-step7">
+  <main class="main">
+    <p style="font-size:13px;color:#555;margin-bottom:4px;">Adult social care</p>
+    <h2 style="font-size:20px;font-weight:bold;margin-bottom:6px;">Review and submit</h2>
+    <p class="step-label">Step 7 of 7</p>
+    <div class="progress-bar">
+      <span class="done"></span><span class="done"></span><span class="done"></span>
+      <span class="done"></span><span class="done"></span><span class="done"></span><span class="current"></span>
+    </div>
+    <p class="saved-msg">Progress saved.</p>
+
+    <div class="ai-assistant" id="ai-panel">
+      <div class="ai-assistant-header">
+        <span class="ai-badge">AI</span>
+        <strong>Tips to get a faster, more accurate response</strong>
+      </div>
+      <p>Based on your message, here are a few things that could help the Adult Social Care team deal with your enquiry more quickly.</p>
+      <ul class="ai-tips">
+        <li><span class="ai-tip-icon">&#x1FA7A;</span><span class="ai-tip-text"><strong>Add your parent's GP details</strong>If a care needs assessment is required, the team will contact the GP. Providing their name and surgery now can cut 2&ndash;5 days off response time.</span></li>
+        <li><span class="ai-tip-icon">&#x1F4CB;</span><span class="ai-tip-text"><strong>Mention any existing diagnoses or conditions</strong>If your parent has been diagnosed with anything relevant (e.g. dementia, mobility issues, diabetes), including this helps the team prioritise and route your case correctly.</span></li>
+        <li><span class="ai-tip-icon">&#x1F3E0;</span><span class="ai-tip-text"><strong>Confirm whether your parent is a Brent resident</strong>Adult social care is provided by the borough where the person lives. Confirming this up front prevents delays caused by referrals to another authority.</span></li>
+        <li><span class="ai-tip-icon">&#x1F4A1;</span><span class="ai-tip-text"><strong>You may be able to self-serve</strong>Brent's <a href="#" style="color:#1565c0;">Care Act self-referral form</a> lets you request a care needs assessment directly &mdash; no waiting for a callback. This is often faster than a general enquiry for first-time requests.</span></li>
+        <li><span class="ai-tip-icon">&#x1F4DE;</span><span class="ai-tip-text"><strong>Add a phone number if urgent</strong>You haven't provided a contact number. If this is time-sensitive, adding one lets the team call you rather than wait for email replies.</span></li>
+      </ul>
+      <button class="ai-dismiss" onclick="document.getElementById('ai-panel').style.display='none'">Dismiss suggestions</button>
+    </div>
+
+    <div class="review-section">
+      <div class="review-section-header"><h3>Who are you contacting us about?</h3></div>
+      <div class="review-row">
+        <div class="review-label">Are you contacting us for yourself or someone else</div>
+        <div class="review-value">Myself</div>
+      </div>
+    </div>
+
+    <div class="review-section">
+      <div class="review-section-header"><h3>What do you need help with?</h3></div>
+      <div class="review-row">
+        <div class="review-label">What do you need help with?</div>
+        <div class="review-value-wrap">
+          <div class="review-value" id="help-value">General help and support</div>
+          <div class="ai-suggestion" id="ai-suggestion-box">
+            <div class="ai-suggestion-header">
+              <span class="ai-badge-sm">AI</span>
+              <span>Suggested improvement</span>
+            </div>
+            <p>Your message specifically asks about a care needs assessment. <strong>&ldquo;General help and support&rdquo;</strong> is a broad category that may slow routing &mdash; the following category matches your enquiry more closely and will reach the right team faster.</p>
+            <div class="ai-suggestion-proposed">Care assessments enquiry</div>
+            <div class="ai-suggestion-actions">
+              <button class="btn-ai-accept" onclick="acceptSuggestion()">Accept suggestion</button>
+              <button class="btn-ai-ignore" onclick="document.getElementById('ai-suggestion-box').style.display='none'">Ignore</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="review-section">
+      <div class="review-section-header"><h3>Your message</h3></div>
+      <div class="review-row"><div class="review-label">Summary</div><div class="review-value">Concern about elderly parent needing some support at home</div></div>
+      <div class="review-row">
+        <div class="review-label">Your message</div>
+        <div class="review-value multiline">Dear Adult Social Care Team,
+
+I am contacting you because I am becoming worried about my elderly parent and think they may need some support at home.
+
+They are still living independently, but I have noticed that they are <span class="highlight">finding some everyday tasks more difficult</span>, including keeping on top of the house, preparing meals, getting out and about, and generally managing on their own. I do not think they need full-time care, but I wondered whether they might be eligible for some support one or two days a week, or possibly help from a carer visiting at home.
+
+Could you please advise whether we need to request a care needs assessment and what the process for that involves? I would also like to know what funding options might be available, and how long the process typically takes.
+
+Thank you very much for your time. I look forward to hearing from you.
+
+Kind regards,
+James</div>
+      </div>
+      <div class="review-row"><div class="review-label">Do you have a reference number?</div><div class="review-value">No</div></div>
+    </div>
+
+    <div class="review-section">
+      <div class="review-section-header"><h3>Doctor details and emergency contact <span style="font-weight:normal;font-size:14px;">(optional)</span></h3></div>
+      <div class="review-row"><div class="review-label">Doctor's name (optional)</div><div class="review-value placeholder">Not provided</div></div>
+      <div class="review-row"><div class="review-label">Surgery name (optional)</div><div class="review-value placeholder">Not provided</div></div>
+      <div class="review-row"><div class="review-label">Surgery phone number (optional)</div><div class="review-value placeholder">Not provided</div></div>
+      <div class="review-row"><div class="review-label">Emergency contact name</div><div class="review-value placeholder">Not provided</div></div>
+      <div class="review-row"><div class="review-label">Emergency contact phone number</div><div class="review-value placeholder">Not provided</div></div>
+      <div class="review-row"><div class="review-label">What is their relationship to this person? (optional)</div><div class="review-value placeholder">Not provided</div></div>
+    </div>
+
+    <div class="review-section">
+      <div class="review-section-header"><h3>Your details</h3></div>
+      <div class="review-row"><div class="review-label">First name</div><div class="review-value">James</div></div>
+      <div class="review-row"><div class="review-label">Last name</div><div class="review-value">Smith</div></div>
+      <div class="review-row"><div class="review-label">Email address</div><div class="review-value">james.smith@example.com</div></div>
+      <div class="review-row"><div class="review-label">Phone number (optional)</div><div class="review-value placeholder">Not provided</div></div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn-primary" onclick="goTo('page-submitted')">Submit</button>
+      <button class="btn-secondary" onclick="goTo('page-step6')">&#8592; Back</button>
+    </div>
+    <p class="privacy-note">By submitting this form you agree to our <a href="#">privacy policy</a>. Your information will only be used to respond to your enquiry and will be handled in accordance with the Data Protection Act 2018.</p>
+  </main>
+</div>
+
+<!-- SUBMITTED -->
+<div class="page" id="page-submitted">
+  <main class="main">
+    <div style="background:#e8f5e9;border:2px solid #2e7d32;border-radius:4px;padding:24px;margin-bottom:24px;">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px;">
+        <span style="font-size:28px;">&#x2705;</span>
+        <h2 style="font-size:20px;font-weight:bold;color:#1b5e20;">Message sent successfully</h2>
+      </div>
+      <p style="font-size:14px;color:#2e7d32;line-height:1.6;margin-bottom:8px;">Thank you, James. Your message has been received by the Adult Social Care team.</p>
+      <p style="font-size:13px;color:#555;line-height:1.6;">Your reference number is <strong>ASC-2026-084721</strong>. Please quote this if you contact us again about this matter.</p>
+    </div>
+    <div style="background:#fff;border:1px solid #ddd;padding:18px;font-size:13px;line-height:1.7;color:#444;">
+      <p><strong>What happens next?</strong></p>
+      <ul style="margin:10px 0 0 18px;line-height:1.8;">
+        <li>A confirmation has been sent to <strong>james.smith@example.com</strong></li>
+        <li>We aim to respond within <strong>5 working days</strong></li>
+        <li>If we need more information, a member of the team will contact you</li>
+        <li>For urgent concerns, call <strong>020 8937 1234</strong></li>
+      </ul>
+    </div>
+    <div class="btn-row" style="margin-top:24px;">
+      <button class="btn-primary" onclick="goTo('page-landing')">Return to contact page</button>
+    </div>
+  </main>
+</div>
+
+<script>
+  const breadcrumbTails = {
+    'page-landing':   'Contact our teams',
+    'page-step1':     'Adult social care',
+    'page-step2':     'Adult social care',
+    'page-step3':     'Adult social care',
+    'page-step4':     'Adult social care',
+    'page-step5':     'Adult social care',
+    'page-step6':     'Adult social care',
+    'page-step7':     'Adult social care',
+    'page-submitted': 'Adult social care',
+  };
+
+  function goTo(id) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    document.getElementById('breadcrumb-tail').textContent = breadcrumbTails[id] || '';
+    window.scrollTo(0, 0);
+  }
+
+  function updateCount(el, countId, max) {
+    document.getElementById(countId).textContent = el.value.length + ' / ' + max;
+  }
+
+  function acceptSuggestion() {
+    const val = document.getElementById('help-value');
+    val.textContent = 'Care assessments enquiry';
+    val.style.color = '#2e7d32';
+    val.style.fontWeight = 'bold';
+    const box = document.getElementById('ai-suggestion-box');
+    box.innerHTML = '<div style="display:flex;align-items:center;gap:6px;font-size:12px;color:#2e7d32;padding:2px 0"><span style="font-size:15px;">&#x2713;</span> <strong>AI suggestion applied.</strong> Category updated to <em>Care assessments enquiry</em>.</div>';
+    box.style.background = '#f1f8e9';
+    box.style.borderColor = '#a5d6a7';
+  }
+
+  document.getElementById('summary-count').textContent =
+    document.getElementById('summary').value.length + ' / 100';
+  updateCount(document.getElementById('message'), 'msg-count', 1000);
+</script>
+</body>
+</html>
